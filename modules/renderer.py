@@ -28,7 +28,7 @@ class MarkdownRenderer:
                        show_tech_tags: bool = True, show_stars: bool = True) -> str:
         """Genera una tabla de proyectos con badges"""
         if not repos:
-            return "## Proyectos\n\nNo hay proyectos para mostrar\n\n"
+            return f"## {title}\n\nNo hay proyectos para mostrar\n\n"
 
         # Cabecera de la tabla
         table = (
@@ -38,22 +38,24 @@ class MarkdownRenderer:
         )
 
         for repo in repos:
+            # Validación básica de campos requeridos
+            name = repo.get('name', 'Sin nombre')
+            url = repo.get('html_url', '#')
+            description = repo.get('description', '')
+            description = (description[:100] + '...') if len(description) > 100 else description
+
             # Obtener lenguajes principales (top 3)
-            languages = ", ".join(repo.get("languages", {}).keys()[:3])
+            languages = ", ".join(list(repo.get("languages", {}).keys())[:3])
 
             # Construir badges de tecnologías
-            tech_badges = ""
-            if show_tech_tags and languages:
-                tech_badges = f"<sub>{languages}</sub>"
+            tech_badges = f"<sub>{languages}</sub>" if show_tech_tags and languages else ""
 
             # Construir badges de estrellas
-            stars_badge = ""
-            if show_stars and repo.get("stargazers_count", 0) > 0:
-                stars_badge = f"⭐ {repo['stargazers_count']}"
+            stars_badge = f"⭐ {repo.get('stargazers_count', 0)}" if show_stars and repo.get('stargazers_count', 0) > 0 else ""
 
             table += (
-                f"| [{repo['name']}]({repo['html_url']}) "
-                f"| {repo.get('description', '')[:100]}... "
+                f"| [{name}]({url}) "
+                f"| {description} "
                 f"| {tech_badges} {stars_badge} |\n"
             )
 
@@ -64,9 +66,12 @@ class MarkdownRenderer:
         contact_md = f"## {title}\n\n<div align=\"center\">\n"
 
         for link in links:
+            url = link.get("url", "#")
+            icon = link.get("icon", "")
+            platform = link.get("platform", "")
             contact_md += (
-                f'<a href="{link["url"]}" target="_blank">'
-                f'<img src="{link["icon"]}" alt="{link["platform"]}" '
+                f'<a href="{url}" target="_blank">'
+                f'<img src="{icon}" alt="{platform}" '
                 f'width="40" height="40" style="margin: 0 10px;"/></a>\n'
             )
 
