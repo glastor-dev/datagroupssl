@@ -32,6 +32,11 @@ class READMEGenerator:
         user_info = self.github.get_user_info()
         repos = self.github.get_repos()
 
+        # Asegúrate de que repos es una lista de diccionarios
+        if not isinstance(repos, list) or not all(isinstance(r, dict) for r in repos):
+            logging.error("get_repos() no devolvió una lista de diccionarios")
+            repos = []
+
         # Obtener lenguajes para cada repo
         for repo in repos:
             try:
@@ -91,6 +96,9 @@ class READMEGenerator:
 
         for category in context.get("categories", []):
             for repo in self.github.get_filtered_repos(category.get("tag", "")):
+                if not isinstance(repo, dict):
+                    logging.warning(f"Repositorio inesperado (no es dict): {repo}")
+                    continue
                 if repo.get("name") not in filtered_repos:
                     filtered_repos[repo.get("name")] = repo
                 if len(filtered_repos) >= count:
