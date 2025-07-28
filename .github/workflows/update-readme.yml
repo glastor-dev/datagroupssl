@@ -13,11 +13,12 @@ jobs:
     timeout-minutes: 10
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0 # Necesario para el historial completo de git
 
-      - name: Set up Python
+      - name: Set up Python 3.11
         uses: actions/setup-python@v4
         with:
           python-version: '3.11'
@@ -31,12 +32,18 @@ jobs:
       - name: Generate README
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: python main.py
+        run: |
+          set -e  # Falla si hay error
+          python main.py
 
-      - name: Commit and push changes
+      - name: Commit and push changes if README updated
         run: |
           git config --local user.email "actions@github.com"
           git config --local user.name "GitHub Actions"
           git add README.md
-          git diff --quiet || git commit -m "Auto-update README [skip ci]"
-          git push
+          if ! git diff --cached --quiet; then
+            git commit -m "Auto-update README [skip ci]"
+            git push
+          else
+            echo "No changes to commit."
+          fi
