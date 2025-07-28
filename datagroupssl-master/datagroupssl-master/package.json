@@ -1,0 +1,35 @@
+{
+  "name": "data-group",
+  "version": "1.0.0",
+  "description": "Get a list of npm packages with keywords",
+  "license": "GNU-GPL-3.0",
+  "repository": "https://github.com/zerhocool/zerhocool.git",
+  "main": "main.js",
+  "author": {
+    "name": "Andres Antonio Cardoso",
+    "email": "datagroupssl@gmail.com",
+    "url": "https://github.com/datagroupssl"
+  },
+  "funding": {
+    "type": "individual",
+    "url": "https://paypal.me/datagroupssl?country.x=AR&locale.x=es_XC"
+  },
+  "files": [],
+  "types": "",
+  "scripts": {
+    "dev": "node dev.js"
+  },
+  "engines": {},
+  "keywords": [
+    "npm",
+    "package",
+    "license",
+    "package",
+    "pkg",
+    "registry",
+    "find",
+    "search"
+  ],
+  "dependencies": {},
+  "devDependencies": {}
+}
