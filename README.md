@@ -16,11 +16,6 @@ Full Stack Developer | Diseñador | Creador de Contenido
 > — *Arthur C. Clarke*
 
 
-## Proyectos Destacados
-
-No hay proyectos para mostrar
-
-
 ## Conéctate Conmigo
 
 <div align="center">
